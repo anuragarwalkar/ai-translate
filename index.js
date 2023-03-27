@@ -14,16 +14,16 @@ app.post("/api/v1/translate", async (req, res, next) => {
   let text = "";
   const pattern = "/-/";
 
-  if(req.body.json) {
+  if (req.body.json) {
     const rowArray = Object.values(req.body.json);
-    text = rowArray.join(pattern)
-  }else if(req.body.text) {
+    text = rowArray.join(pattern);
+  } else if (req.body.text) {
     text = req.body.text;
   }
 
-  if(!text) {
+  if (!text) {
     res.status(400);
-    return res.send({message: 'Please provide text/json in request body'});
+    return res.send({ message: "Please provide text/json in request body" });
   }
 
   const data = await openai.createCompletion({
@@ -36,7 +36,9 @@ app.post("/api/v1/translate", async (req, res, next) => {
     presence_penalty: 0.0,
   });
 
-  const translated = data.data.choices[0].text.replace(/(\r\n|\n|\r)/gm, "").split(pattern);
+  const translated = data.data.choices[0].text
+    .replace(/(\r\n|\n|\r)/gm, "")
+    .split(pattern);
   const translatedJson = {};
 
   let index = 0;
