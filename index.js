@@ -21,6 +21,11 @@ app.post("/api/v1/translate", async (req, res, next) => {
     text = req.body.text;
   }
 
+  if(!text) {
+    res.status(400);
+    return res.send({message: 'Please provide text/json in request body'});
+  }
+
   const data = await openai.createCompletion({
     model: "text-davinci-003",
     prompt: `Translate the text into ${req.body.language}: ${text}`,
